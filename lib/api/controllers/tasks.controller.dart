@@ -56,6 +56,8 @@ class TasksController extends GetxController {
       loading = false;
       update();
     } catch (e) {
+      loading = false;
+      update();
       if (Get.isDialogOpen == true) {
         Get.back();
       }
