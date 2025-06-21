@@ -69,3 +69,24 @@ extension TimeOfDayExtension on TimeOfDay? {
     return '$formattedHour:${minute.toString().padLeft(2, '0')} $period';
   }
 }
+
+//email validation extension
+extension EmailValidation on String {
+  bool isValidEmail() {
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+    );
+    return emailRegex.hasMatch(this);
+  }
+}
+
+//get last name from full name
+extension LastNameFromFullName on String {
+  String getLastName() {
+    final parts = this.split(' ');
+    if (parts.length > 1) {
+      return parts.last;
+    }
+    return this; // If there's no last name, return the full name
+  }
+}

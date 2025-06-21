@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'package:bloc_todo/models/user.dart';
+
+import 'package:bloc_todo/dtos/auth.request.dto.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
   final String _registerUrl = dotenv.env['REGISTER_API_URL']!;
 
-  Future<Map<String, dynamic>> register(User user) async {
+  Future<Map<String, dynamic>> register(AuthRequestDto user) async {
     if (!user.isValid()) {
       return {'error': 'Invalid user data'};
     }

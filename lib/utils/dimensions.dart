@@ -122,3 +122,26 @@ class Dimensions {
     return getHeight(vertical);
   }
 }
+
+extension DimensionsExtension on double {
+  double get height =>
+      this * (Dimensions.deviceHeight / Dimensions.referenceHeight);
+  double get width =>
+      this * (Dimensions.deviceWidth / Dimensions.referenceWidth);
+  double get fontSize =>
+      this * (Dimensions.deviceWidth / Dimensions.referenceWidth);
+  double get iconSize =>
+      this * (Dimensions.deviceWidth / Dimensions.referenceWidth);
+}
+
+// extension method for int for height,width, fontsize, iconsize
+extension DimensionsIntExtension on int {
+  double get height =>
+      this * (Dimensions.deviceHeight / Dimensions.referenceHeight);
+  double get width =>
+      this * (Dimensions.deviceWidth / Dimensions.referenceWidth);
+  double get fontSize =>
+      this * (Dimensions.deviceWidth / Dimensions.referenceWidth);
+  double get iconSize =>
+      this * (Dimensions.deviceWidth / Dimensions.referenceWidth);
+}
