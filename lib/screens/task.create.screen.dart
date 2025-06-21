@@ -1,13 +1,16 @@
+import 'package:bloc_todo/components/custom.dropdown.dart';
 import 'package:bloc_todo/components/custom.input.dart';
 import 'package:bloc_todo/components/custom.time.picker.dart';
 import 'package:bloc_todo/components/primary.button.dart';
 import 'package:bloc_todo/models/task_model.dart';
 import 'package:bloc_todo/services/task_service.dart';
 import 'package:bloc_todo/theme/app.colors.dart';
+import 'package:bloc_todo/utils/dimensions.dart';
 import 'package:bloc_todo/utils/utilities.dart';
 import 'package:bloc_todo/views/app.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../components/custom.date.picker.dart';
 
 class TaskCreateScreen extends StatefulWidget {
@@ -20,10 +23,10 @@ class TaskCreateScreen extends StatefulWidget {
 class _TaskCreateScreenState extends State<TaskCreateScreen> {
   final _formKey = GlobalKey<FormState>();
   final _taskService = TaskService();
-  
+
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  
+
   String? selectedTime;
   String? selectedDate;
   DateTime? taskDate;
@@ -41,7 +44,7 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
     if (_formKey.currentState?.validate() != true) {
       return;
     }
-    
+
     if (taskDate == null || selectedTime == null) {
       setState(() {
         _errorMessage = "Please select both date and time";
@@ -63,7 +66,7 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
       );
 
       final success = await _taskService.createTask(task);
-      
+
       if (success) {
         Get.snackbar(
           'Success',
@@ -136,7 +139,7 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                     child: Column(
                       children: [
                         CustomInput(
-                          label: "Title", 
+                          label: "Title",
                           hintText: "Enter task title",
                           controller: _titleController,
                           validator: (value) {
@@ -146,7 +149,7 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.height),
                         CustomInput(
                           label: "Description",
                           hintText: "Enter description here",
@@ -159,7 +162,7 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.height),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -170,7 +173,8 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                                   if (date != null) {
                                     setState(() {
                                       taskDate = date;
-                                      selectedDate = "${date.day}/${date.month}/${date.year}";
+                                      selectedDate =
+                                          "${date.day}/${date.month}/${date.year}";
                                     });
                                   }
                                 },
@@ -178,7 +182,7 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                                 value: selectedDate,
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            SizedBox(width: 10.width),
                             Expanded(
                               child: CustomTimePicker(
                                 label: "Time",
@@ -194,6 +198,13 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                               ),
                             ),
                           ],
+                        ),
+                        SizedBox(height: 20.height),
+                        CustomDropdown(
+                          items: ["Personal", "Work", "Health", "Environment"],
+                          selectedValue: "Personal",
+                          onChanged: (String? val) {},
+                          itemLabel: (String item) => item,
                         ),
                         if (_errorMessage != null)
                           Padding(

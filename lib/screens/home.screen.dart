@@ -1,4 +1,5 @@
 import 'package:bloc_todo/api/controllers/auth.controller.dart';
+import 'package:bloc_todo/api/controllers/tasks.controller.dart';
 import 'package:bloc_todo/api/repositories/repository.dart';
 import 'package:bloc_todo/components/bottom.sheet.container.dart';
 import 'package:bloc_todo/components/day.of.week.card.dart';
@@ -31,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadData();
+      _loadTasks();
     });
     super.initState();
   }
@@ -44,6 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
         user = userInfo?.user;
       });
     }
+  }
+
+  //handle load tasks
+  void _loadTasks({int pageIndex = 0}) async {
+    var taskController = Get.find<TasksController>();
+    await taskController.getTasks(pageIndex: pageIndex);
   }
 
   Future<void> handleLogout() async {
@@ -98,55 +106,69 @@ class _HomeScreenState extends State<HomeScreen> {
     return GetBuilder(
       init: AuthController(repository: Get.find<Repository>()),
       builder: (authController) {
-        return Stack(
-          children: [
-            AppView(
-              appBar:
-                  user != null
-                      ? HomeAppBar(user: user!, handleLogout: handleLogout)
-                      : null,
-              body: Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TaskSummaryView(), SizedBox(height: 15),
-                    //horizontal list view of the days of the week,
-                    SizedBox(height: 15),
-                    SizedBox(
-                      height: 120,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 7,
-                        itemBuilder: (context, index) {
-                          return DayOfWeekCard(
-                            index: index,
-                            onTap: () {
-                              print("Day of week ${index + 1} tapped");
+        return GetBuilder(
+          init: TasksController(repository: Get.find<Repository>()),
+          builder: (taskController) {
+            return RefreshIndicator(
+              child: Stack(
+                children: [
+                  AppView(
+                    appBar:
+                        user != null
+                            ? HomeAppBar(
+                              user: user!,
+                              handleLogout: handleLogout,
+                            )
+                            : null,
+                    body: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TaskSummaryView(), SizedBox(height: 15),
+                          //horizontal list view of the days of the week,
+                          SizedBox(height: 15),
+                          SizedBox(
+                            height: 120,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 7,
+                              itemBuilder: (context, index) {
+                                return DayOfWeekCard(
+                                  index: index,
+                                  onTap: () {
+                                    print("Day of week ${index + 1} tapped");
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 25),
+
+                          Expanded(child: TaskCalendarView()),
+                          SizedBox(height: 15),
+                          // add task button
+                          PrimaryButton(
+                            title: "Add New Task",
+                            onPressed: () {
+                              Get.to(() => TaskCreateScreen());
                             },
-                          );
-                        },
+                          ),
+                          SizedBox(height: 15),
+                        ],
                       ),
                     ),
-                    SizedBox(height: 25),
-
-                    Expanded(child: TaskCalendarView()),
-                    SizedBox(height: 15),
-                    // add task button
-                    PrimaryButton(
-                      title: "Add New Task",
-                      onPressed: () {
-                        Get.to(() => TaskCreateScreen());
-                      },
-                    ),
-                    SizedBox(height: 15),
-                  ],
-                ),
+                  ),
+                  if (authController.loading || taskController.loading)
+                    Loader(),
+                ],
               ),
-            ),
-            if (authController.loading) Loader(),
-          ],
+              onRefresh: () async {
+                _loadTasks();
+              },
+            );
+          },
         );
       },
     );

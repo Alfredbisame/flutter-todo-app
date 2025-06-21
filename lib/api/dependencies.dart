@@ -1,4 +1,5 @@
 import 'package:bloc_todo/api/controllers/auth.form.controller.dart';
+import 'package:bloc_todo/api/controllers/tasks.controller.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,4 +30,6 @@ Future<void> init() async {
   );
 
   Get.put(() => AuthFormController(), permanent: true);
+
+  Get.lazyPut(() => TasksController(repository: Get.find<Repository>()));
 }
