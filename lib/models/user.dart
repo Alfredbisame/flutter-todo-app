@@ -1,34 +1,17 @@
 class User {
-  final String name;
-  final String email;
-  final String password;
+  String? id;
+  String? name;
+  String? email;
 
-  User({
-    required this.name,
-    required this.email,
-    required this.password,
-  });
+  User({this.id, this.name, this.email});
+
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+  }
 
   Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'email': email,
-      'password': password,
-    };
-  }
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      name: json['name'],
-      email: json['email'],
-      password: json['password'],
-    );
-  }
-
-  // Basic validation
-  bool isValid() {
-    return name.isNotEmpty && 
-           email.contains('@') && 
-           password.length >= 6;
+    return {'id': id, 'name': name, 'email': email};
   }
 }

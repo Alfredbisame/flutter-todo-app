@@ -5,13 +5,13 @@ class PrimaryButton extends StatelessWidget {
   final String title;
   Function()? onPressed;
   bool? disabled = false;
-  Color? bgcolor;
+  Color? bgColor;
   Color? textColor;
   PrimaryButton({
     super.key,
     required this.title,
     this.onPressed,
-    this.bgcolor,
+    this.bgColor,
     this.textColor,
     this.disabled = false,
   });
@@ -22,13 +22,16 @@ class PrimaryButton extends StatelessWidget {
       color: Colors.transparent,
       child: Ink(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: bgColor ?? Colors.white,
           borderRadius: BorderRadius.circular(10),
-          gradient: const LinearGradient(
-            colors: [Color(0xffFF48F8), Color(0xffE906E0)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          gradient:
+              bgColor == null
+                  ? const LinearGradient(
+                    colors: [Color(0xffFF48F8), Color(0xffE906E0)],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  )
+                  : null,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade200,

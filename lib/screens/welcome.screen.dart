@@ -1,5 +1,6 @@
+import 'package:bloc_todo/api/repositories/repository.dart';
 import 'package:bloc_todo/resources/resources.dart';
-import 'package:bloc_todo/screens/auth_screen.dart';
+import 'package:bloc_todo/routes/app.routes.dart';
 import 'package:bloc_todo/views/app.view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,9 +22,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   void handleLoadData() {
-    //delay for 2 seconds
-    Future.delayed(const Duration(seconds: 3), () {
-      Get.offAll(() => AuthScreen());
+    Future.delayed(const Duration(seconds: 2), () async {
+      var repository = Get.find<Repository>();
+      var authUser = await repository.getAuthUser();
+      if (authUser == null) {
+        return Get.offAllNamed(AppRoutes.authScreen);
+      }
+      Get.offAllNamed(AppRoutes.home);
     });
   }
 
