@@ -14,7 +14,7 @@ Future<void> init() async {
 
   var sharedPreferences = await SharedPreferences.getInstance();
   Get.lazyPut(() => AppStore(prefs: sharedPreferences));
-
+  
   // load repositories
   Get.lazyPut(
     () => Repository(

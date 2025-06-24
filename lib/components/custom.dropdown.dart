@@ -15,7 +15,7 @@ class CustomDropdown<T> extends StatelessWidget {
   final Widget? suffixIcon;
 
   const CustomDropdown({
-    Key? key,
+    super.key,
     required this.items,
     required this.selectedValue,
     this.label,
@@ -24,7 +24,7 @@ class CustomDropdown<T> extends StatelessWidget {
     this.hintText,
     this.prefixIcon,
     this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

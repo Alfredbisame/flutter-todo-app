@@ -83,7 +83,7 @@ extension EmailValidation on String {
 //get last name from full name
 extension LastNameFromFullName on String {
   String getLastName() {
-    final parts = this.split(' ');
+    final parts = split(' ');
     if (parts.length > 1) {
       return parts.last;
     }

@@ -6,13 +6,13 @@ class AppStore extends GetxService {
   final SharedPreferences _prefs;
 
   AppStore({required SharedPreferences prefs}) : _prefs = prefs;
-
+  
   Future<void> saveData(String key, String data) async {
     await _prefs.setString(key, data);
   }
 
   Future<dynamic> getData(String key) async {
-    var data = await _prefs.getString(key);
+    var data = _prefs.getString(key);
     return data;
   }
 

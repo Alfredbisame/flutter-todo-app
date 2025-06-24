@@ -13,7 +13,7 @@ import '../views/app.view.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
-
+  
   @override
   State<AuthScreen> createState() => _AuthScreenState();
 }
@@ -24,7 +24,7 @@ class _AuthScreenState extends State<AuthScreen>
   String? _errorMessage;
   final _signUpFormKey = GlobalKey<FormState>();
   final _signInFormKey = GlobalKey<FormState>();
-
+  
   @override
   void initState() {
     super.initState();
